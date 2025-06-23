@@ -2,15 +2,19 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>SPA + API Demo</title>
+  <title>Event Hadiah & Voucher</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <audio id="bgm" autoplay loop>
+    <source src="music.mp3" type="audio/mp3">
+  </audio>
+
   <nav>
     <a href="#/" onclick="navigate('/')">Beranda</a>
-    <a href="#/tentang" onclick="navigate('/tentang')">Tentang</a>
-    <a href="#/pengguna" onclick="navigate('/pengguna')">Pengguna (API)</a>
+    <a href="#/hadiah" onclick="navigate('/hadiah')" class="goyang">Hadiah</a>
+    <a href="#/voucher" onclick="navigate('/voucher')">Voucher</a>
   </nav>
 
   <div id="app"></div>
