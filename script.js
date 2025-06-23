@@ -1,7 +1,11 @@
 const routes = {
-  "/": "<h1>Beranda</h1><p>Ini adalah halaman utama dari SPA.</p>",
-  "/tentang": "<h1>Tentang Kami</h1><p>SPA ini dibuat dengan JavaScript murni dan menggunakan API publik.</p>",
-  "/pengguna": "<h1>Daftar Pengguna</h1><div id='user-list'>Memuat data...</div>"
+  "/": "<h1>Selamat Datang!</h1><p>Ikuti event menarik dan dapatkan hadiah/voucher eksklusif!</p>",
+  "/hadiah": "<h1>Daftar Hadiah</h1><div id='hadiah-list'>Memuat hadiah...</div>",
+  "/voucher": `
+    <h1>Voucher Spesial</h1>
+    <img src="https://via.placeholder.com/300x150?text=Voucher+1" class="voucher-img" />
+    <img src="https://via.placeholder.com/300x150?text=Voucher+2" class="voucher-img" />
+  `
 };
 
 function navigate(path) {
@@ -13,25 +17,23 @@ function renderRoute(path) {
   const app = document.getElementById("app");
   app.innerHTML = routes[path] || "<h1>404 - Halaman tidak ditemukan</h1>";
 
-  if (path === "/pengguna") {
-    fetchUsers();
+  if (path === "/hadiah") {
+    fetchHadiah();
   }
 }
 
-async function fetchUsers() {
-  const container = document.getElementById("user-list");
+async function fetchHadiah() {
+  const list = document.getElementById("hadiah-list");
   try {
-    const res = await fetch("https://jsonplaceholder.typicode.com/photos");
-    const users = await res.json();
-    container.innerHTML = users.map(user => `
-      <div class="user-card">
-        <strong>${user.name}</strong><br>
-        <small>${user.email}</small><br>
-        ${user.address.city}
+    const res = await fetch("hadiah.json");
+    const data = await res.json();
+    list.innerHTML = data.map(item => `
+      <div class="card">
+        <strong>${item.nama}</strong><br>${item.deskripsi}
       </div>
     `).join('');
   } catch (err) {
-    container.innerHTML = "<p style='color:red;'>Gagal memuat data pengguna.</p>";
+    list.innerHTML = "<p style='color:red;'>Gagal memuat data hadiah.</p>";
   }
 }
 
