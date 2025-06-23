@@ -21,7 +21,7 @@ function renderRoute(path) {
 async function fetchUsers() {
   const container = document.getElementById("user-list");
   try {
-    const res = await fetch("https://jsonplaceholder.typicode.com/users");
+    const res = await fetch("https://jsonplaceholder.typicode.com/photos");
     const users = await res.json();
     container.innerHTML = users.map(user => `
       <div class="user-card">
