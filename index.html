@@ -23,7 +23,7 @@
   </div>
 
   <script>
-    const apiKey = "5ea01462f23891899e8e6e6d0f4ce775"; // Ganti dengan API key dari OpenWeather
+    const apiKey = "5ea01462f23891899e8e6e6d0f4ce775"; // API key dari OpenWeather
 
     function getWeather() {
       const city = document.getElementById("city").value;
@@ -37,15 +37,21 @@
       const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=id`;
 
       fetch(url)
-  .then(res => res.json())
-  .then(data => {
-    console.log(data); // untuk cek hasil mentah
-    if (data.cod === 200) {
-      // tampilkan cuaca
-    } else {
-      document.getElementById("result").innerHTML = `<p class="text-red-500">${data.message}</p>`;
-    }
-  })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data); // untuk debug
+          if (data.cod === 200) {
+            result.innerHTML = `
+              <p class="font-bold text-xl">${data.name}, ${data.sys.country}</p>
+              <p class="mt-2 text-gray-600">${data.weather[0].description}</p>
+              <p class="mt-2 text-3xl font-bold text-blue-600">${data.main.temp}°C</p>
+              <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" 
+                   alt="icon cuaca" class="mx-auto mt-4">
+            `;
+          } else {
+            result.innerHTML = `<p class="text-red-500">${data.message}</p>`;
+          }
+        })
         .catch(() => {
           result.innerHTML = `<p class="text-red-500">Terjadi kesalahan, coba lagi.</p>`;
         });
