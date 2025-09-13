@@ -39,6 +39,7 @@
       fetch(url)
         .then(res => res.json())
         .then(data => {
+          console.log(data); // untuk cek hasil mentah
           if (data.cod === 200) {
             result.innerHTML = `
               <p class="font-bold text-xl">${data.name}, ${data.sys.country}</p>
