@@ -2,23 +2,27 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Event Hadiah & Voucher</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Belajar API</title>
 </head>
 <body>
+  <h1>Daftar Post</h1>
+  <ul id="postList"></ul>
 
-  <audio id="bgm" autoplay loop>
-    <source src="music.mp3" type="audio/mp3">
-  </audio>
+  <script>
+    // API dummy untuk belajar
+    const apiURL = "https://jsonplaceholder.typicode.com/posts";
 
-  <nav>
-    <a href="#/" onclick="navigate('/')">Beranda</a>
-    <a href="#/hadiah" onclick="navigate('/hadiah')" class="goyang">Hadiah</a>
-    <a href="#/voucher" onclick="navigate('/voucher')">Voucher</a>
-  </nav>
-
-  <div id="app"></div>
-
-  <script src="script.js"></script>
+    fetch(apiURL)
+      .then(response => response.json())
+      .then(data => {
+        const list = document.getElementById("postList");
+        data.slice(0, 5).forEach(post => {
+          const li = document.createElement("li");
+          li.textContent = post.title;
+          list.appendChild(li);
+        });
+      })
+      .catch(error => console.error("Error:", error));
+  </script>
 </body>
 </html>
