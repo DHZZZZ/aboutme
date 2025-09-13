@@ -2,27 +2,33 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Belajar API</title>
+  <title>Aplikasi Cuaca</title>
 </head>
 <body>
-  <h1>Daftar Post</h1>
-  <ul id="postList"></ul>
+  <h1>Cek Cuaca</h1>
+  <input type="text" id="city" placeholder="Masukkan nama kota">
+  <button onclick="getWeather()">Cari</button>
+  <p id="result"></p>
 
   <script>
-    // API dummy untuk belajar
-    const apiURL = "https://jsonplaceholder.typicode.com/posts";
+    const apiKey = "5ea01462f23891899e8e6e6d0f4ce775"; // ganti dengan API key OpenWeatherMap
 
-    fetch(apiURL)
-      .then(response => response.json())
-      .then(data => {
-        const list = document.getElementById("postList");
-        data.slice(0, 5).forEach(post => {
-          const li = document.createElement("li");
-          li.textContent = post.title;
-          list.appendChild(li);
-        });
-      })
-      .catch(error => console.error("Error:", error));
+    function getWeather() {
+      const city = document.getElementById("city").value;
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=id`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          if (data.cod === 200) {
+            document.getElementById("result").innerText =
+              `${data.name}: ${data.main.temp}°C, ${data.weather[0].description}`;
+          } else {
+            document.getElementById("result").innerText = "Kota tidak ditemukan!";
+          }
+        })
+        .catch(err => console.error(err));
+    }
   </script>
 </body>
 </html>
