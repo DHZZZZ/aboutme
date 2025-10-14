@@ -5,16 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aplikasi Cuaca</title>
   <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Cek login -->
   <script>
-  if (localStorage.getItem("isLoggedIn") !== "true") {
-    window.location.href = "login.html";
-  }
-</script>
+    if (localStorage.getItem("isLoggedIn") !== "true") {
+      window.location.href = "login.html";
+    }
+  </script>
 </head>
 <body class="bg-blue-50 min-h-screen flex items-center justify-center">
 
   <div class="bg-white p-6 rounded-2xl shadow-lg w-full max-w-md text-center">
-    <h1 class="text-2xl font-bold text-blue-700 mb-4">🌤️ Cek Cuaca</h1>
+    <h1 class="text-2xl font-bold text-blue-700 mb-4 cursor-pointer" onclick="goHome()">🌤️ Cek Cuaca</h1>
 
     <input type="text" id="city" placeholder="Masukkan nama kota"
       class="border w-full px-3 py-2 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400">
@@ -25,13 +27,19 @@
     </button>
 
     <div id="result" class="mt-6 text-lg text-gray-700"></div>
+
+    <!-- Tombol Logout -->
+    <button onclick="logout()" 
+      class="mt-6 w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg">
+      Logout
+    </button>
   </div>
 
   <script>
-    const apiKey = "5ea01462f23891899e8e6e6d0f4ce775"; // API key dari OpenWeather
+    const apiKey = "5ea01462f23891899e8e6e6d0f4ce775";
 
     function getWeather() {
-      const city = document.getElementById("city").value;
+      const city = document.getElementById("city").value.trim();
       const result = document.getElementById("result");
 
       if (!city) {
@@ -44,16 +52,17 @@
       fetch(url)
         .then(res => res.json())
         .then(data => {
-          console.log(data); // untuk debug
           if (data.cod === 200) {
             result.innerHTML = `
               <p class="font-bold text-xl">${data.name}, ${data.sys.country}</p>
-              <p class="mt-2 text-gray-600">${data.weather[0].description}</p>
-              <p class="mt-2 text-3xl font-bold text-blue-600">${data.main.temp}°C</p>
-              <p class="mt-2 text-3xl font-bold text-blue-600">${data.main.humidity}</p>
-              <p class="mt-2 text-3xl font-bold text-blue-600">${data.wind.speed}mill/h</p>
               <img src="https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png" 
-                   alt="icon cuaca" class="mx-auto mt-4">
+                   alt="icon cuaca" class="mx-auto mt-2">
+              <p class="mt-2 text-gray-600 capitalize">${data.weather[0].description}</p>
+              <div class="mt-4 text-left">
+                <p><strong>Suhu:</strong> ${data.main.temp}°C</p>
+                <p><strong>Kelembapan:</strong> ${data.main.humidity}%</p>
+                <p><strong>Angin:</strong> ${data.wind.speed} m/s</p>
+              </div>
             `;
           } else {
             result.innerHTML = `<p class="text-red-500">${data.message}</p>`;
@@ -62,6 +71,17 @@
         .catch(() => {
           result.innerHTML = `<p class="text-red-500">Terjadi kesalahan, coba lagi.</p>`;
         });
+    }
+
+    function logout() {
+      localStorage.removeItem("isLoggedIn");
+      window.location.href = "login.html";
+    }
+
+    function goHome() {
+      // Reset tampilan ke awal
+      document.getElementById("city").value = "";
+      document.getElementById("result").innerHTML = "";
     }
   </script>
 
